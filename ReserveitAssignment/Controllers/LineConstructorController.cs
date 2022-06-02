@@ -18,7 +18,8 @@ namespace ReserveitAssignment.Controllers
             var text = new List<string>() { "Music", "Love", "Money", "Food", "Game", "Bad CGPA"};
             var listToString = "";
             var minLength = 6;
-            List<string> line = new List<string>();
+            //List<String> line = new ArrayList<string>();
+            var line = new ArrayList();
 
             foreach (var item in text)
             {
@@ -34,11 +35,11 @@ namespace ReserveitAssignment.Controllers
                     //line = new List<string>() { 
                     if (i + (minLength - 1) >= listToString.Length)
                     {
-                        var subline = listToString.Substring(i, ((listToString.Length)-i));
+                        line.Add(listToString.Substring(i, ((listToString.Length)-i)));
                     }
                     else
                     {
-                        var substring = listToString.Substring(i, (minLength - 1));
+                        line.Add(listToString.Substring(i, (minLength - 1)));
                     }
                 }
             }
