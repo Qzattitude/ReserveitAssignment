@@ -8,35 +8,37 @@ using System.Linq;
 
 namespace ReserveitAssignment.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[Action]")]
     [ApiController]
-
     public class ConstructLinesController : ControllerBase
     {
 
         LineConstructorRepository lineConstructorRepository = new LineConstructorRepository();
 
         [HttpGet]
+
         public IActionResult Get()
         {
             try
             {
+                HttpContext.Response.Headers.Add("page-size", "{pageSize}");
                 return Ok(lineConstructorRepository.GetLines());
-            }catch (Exception ex)
+            }catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(401);
             }
 
         }
 
 
-        [HttpPost]
-        public IActionResult Post(int n, List<string> text)
+        [HttpPost("{pageSize:int}")]
+        public IActionResult Post(int pageSize, List<string> text)
         {
             try
             {
-                lineConstructorRepository.LineConstructorRepositiry(n, text);
-                return Ok(StatusCodes.Status201Created);
+                HttpContext.Response.Headers.Add("page-size","{pageSize}");
+                lineConstructorRepository.LineConstructorRepositiry(pageSize, text);
+                return Created("~/api/page-size/"+ pageSize, text);
             }
             catch (Exception ex)
             {
@@ -44,51 +46,6 @@ namespace ReserveitAssignment.Controllers
             }
         
         }
-
-        //public ArrayList ConstructLine(int minLength, List<string> text)
-        //{
-        //    //var text = new List<string>() { "Music", "Love", "Money", "Food", "Game", "Bad CGPA" };
-        //    ArrayList line = new ArrayList();
-        //    var lineOfSize = "";
-
-        //    for (var i = 0; i < text.Count; i++)
-        //    {
-        //        lineOfSize = text[i];
-        //        if (minLength == text[i].Length)
-        //        {
-        //            line.Add(text[i]);
-        //        }
-        //        else if (minLength > text[i].Length)
-        //        {
-        //            var vacant = minLength - text[i].Length;
-
-        //            for (var j = i + 1; j < text.Count; j++)
-        //            {
-        //                if (text[j].Length == vacant)
-        //                {
-        //                    //operation
-        //                    ///lineOfSize = String.Concat(lineOfSize, text[j]);
-        //                    var temp = String.Concat(lineOfSize, " ");
-        //                    line.Add(String.Concat(temp, text[j]));
-        //                    temp = "";
-        //                }
-        //                else if (text[j].Length < vacant)
-        //                {
-        //                    //operation
-        //                    //lineOfSize = String.Concat(lineOfSize, text[j]);
-        //                    var temp2 = String.Concat(lineOfSize, " ");
-        //                    line.Add(String.Concat(temp2, text[j]));
-        //                    temp2 = "";
-        //                }
-        //            }
-
-        //        }
-
-
-        //    }
-        //    return line;
-        //}
-
     }
 
 
